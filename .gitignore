@@ -1,7 +1,0 @@
-package-lock.json
-node_modules
-yarn.lock
-.DS_Store
-.vscode/last.sql
-.vscode/temp.sql
-yarn-error.log
