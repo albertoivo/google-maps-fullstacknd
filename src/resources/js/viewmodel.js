@@ -51,7 +51,9 @@ function AppViewModel() {
             marker.position
           )
           infowindow.setContent(
-            '<div>' + marker.title + '</div><div id="pano"></div>'
+            '<div>' +
+              marker.title +
+              '</div><div id="pano"></div><br /><div id="foursquare"></div>'
           )
           var panoramaOptions = {
             position: nearStreetViewLocation,
@@ -62,6 +64,10 @@ function AppViewModel() {
           }
           var panorama = new google.maps.StreetViewPanorama(
             document.getElementById('pano'),
+            panoramaOptions
+          )
+          var foursquare = new google.maps.StreetViewPanorama(
+            document.getElementById('foursquare'),
             panoramaOptions
           )
         } else {
