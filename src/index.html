@@ -11,14 +11,33 @@
   <title>Ivo's Map</title>
 
   <link rel="stylesheet" href="resources/css/style.css">
+  <link rel="stylesheet" href="resources/css/menu.css">
 </head>
 
 <body>
 
+  <div class="collapsible-menu">
+    <input type="checkbox" id="menu">
+    <label for="menu">Filter</label>
+    <div class="menu-content">
+      <input type="text" id="search-filter" placeholder="Filter" data-bind="value: filter, valueUpdate: 'afterkeydown'">
+      <ul>
+        <li>
+          <a href="#"></a>lugar 1</li>
+        <li>
+          <a href="#"></a>lugar 2</li>
+        <li>
+          <a href="#"></a>lugar 3</li>
+        <li>
+          <a href="#"></a>lugar 4</li>
+      </ul>
+    </div>
+  </div>
+
   <div id="map"></div>
 
   <script type="text/javascript" src="resources/js/viewmodel.js"></script>
-  <script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js'></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js"></script>
   <script async defer src="https://maps.googleapis.com/maps/api/js?libraries=geometry&key=AIzaSyCfoloq_rkZTlV9bMcNOCptegicVqCqZ4A&v=3&callback=initMap">
   </script>
 
