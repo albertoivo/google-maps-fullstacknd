@@ -104,7 +104,7 @@ function AppViewModel() {
     populateInfoWindow(selectedLocation, largeInfowindow)
   }
 
-  self.showListings = function() {
+  self.showMarkers = function() {
     for (var i = 0; i < markers.length; i++) {
       markers[i].setMap(self.map)
       bounds.extend(markers[i].position)
@@ -117,6 +117,35 @@ function AppViewModel() {
       markers[i].setMap(null)
     }
   }
+
+  self.showOnlyFilteredMarkers = function(markers) {
+    console.log('showOnlyFilteredMarkers')
+    self.hideMarkers()
+    for (var i = 0; i < markers.length; i++) {
+      markers[i].setMap(self.map)
+      bounds.extend(markers[i].position)
+    }
+    self.map.fitBounds(bounds)
+  }
+
+  self.filter() = ko.observable()
+  self.filteredLocations = ko.computed( function() {
+    var filter = self.filter()
+    if (!filter) {
+        self.showMarkers()
+        return self.locations();
+    } else {
+        self.hideMarkers(self.markers())
+        return ko.utils.arrayFilter(self.markers(), function(marker) {
+             startsWith = marker.title.toLowerCase().indexOf(filter.toLowerCase()) !== -1
+             if (startsWith) {
+                self.showMarker(marker)
+                return true
+             }
+        })
+    }
+}, self)
+
 }
 
 function initMap() {
