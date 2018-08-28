@@ -20,16 +20,9 @@
     <input type="checkbox" id="menu">
     <label for="menu">Filter</label>
     <div class="menu-content">
-      <input type="text" id="search-filter" placeholder="Filter" data-bind="value: filter, valueUpdate: 'afterkeydown'">
-      <ul>
-        <li>
-          <a href="#"></a>lugar 1</li>
-        <li>
-          <a href="#"></a>lugar 2</li>
-        <li>
-          <a href="#"></a>lugar 3</li>
-        <li>
-          <a href="#"></a>lugar 4</li>
+      <input type="text" id="search-filter" placeholder="Type your filter" data-bind="value: filter, valueUpdate: 'afterkeydown'">
+      <ul data-bind="foreach: locations">
+        <li><a href="#"><span data-bind="text: $data.title, click: $root.chooseALocation"></span></a></li>
       </ul>
     </div>
   </div>

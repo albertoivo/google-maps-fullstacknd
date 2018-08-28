@@ -58,7 +58,7 @@ function AppViewModel() {
           infowindow.setContent(
             "<div>" +
               marker.title +
-              '</div><div id="pano"></div><br /><div id="foursquare"></div>'
+              '</div><div id="pano"></div><br /><!--div id="foursquare"></div-->'
           );
           var panoramaOptions = {
             position: nearStreetViewLocation,
@@ -95,10 +95,14 @@ function AppViewModel() {
     }
   }
 
-  //Filter the items using the filter text
-  self.filteredLocations = ko.computed( function() {
-
-  })
+  self.chooseALocation = function(selectedLocation) {
+    for (var i = 0; i < markers.length; i++) {
+      if (selectedLocation.title == markers[i].title) {
+        selectedLocation = markers[i];
+      }
+    }
+    populateInfoWindow(selectedLocation, largeInfowindow);
+  };
 }
 
 function initMap() {
@@ -108,30 +112,37 @@ function initMap() {
 var locations = [
   {
     title: "National Congress",
-    location: { lat: -15.7997118, lng: -47.8641627 }
+    location: { lat: -15.7997118, lng: -47.8641627 },
+    wikipedia: "Congresso_Nacional_do_Brasil"
   },
   {
     title: "Mané Garrincha Stadium",
-    location: { lat: -15.7835194, lng: -47.8992105 }
+    location: { lat: -15.7835194, lng: -47.8992105 },
+    wikipedia: "Estádio_Nacional_de_Brasília_Mané_Garrincha"
   },
   {
     title: "Toinha Brasil Show",
-    location: { lat: -15.8228551, lng: -47.9568887 }
+    location: { lat: -15.8228551, lng: -47.9568887 },
+    wikipedia: ""
   },
   {
     title: "Cathedral of Brasília",
-    location: { lat: -15.7983419, lng: -47.8755394 }
+    location: { lat: -15.7983419, lng: -47.8755394 },
+    wikipedia: "Catedral_Metropolitana_de_Brasília"
   },
   {
     title: "Café Cristina",
-    location: { lat: -15.7833516, lng: -47.8785346 }
+    location: { lat: -15.7833516, lng: -47.8785346 },
+    wikipedia: ""
   },
   {
     title: "City Park",
-    location: { lat: -15.8003432, lng: -47.9078002 }
+    location: { lat: -15.8003432, lng: -47.9078002 },
+    wikipedia: "Parque_da_Cidade_Dona_Sarah_Kubitschek"
   },
   {
     title: "National Theater",
-    location: { lat: -15.7922213, lng: -47.8802482 }
+    location: { lat: -15.7922213, lng: -47.8802482 },
+    wikipedia: "Teatro_Nacional_Cláudio_Santoro"
   }
 ];
