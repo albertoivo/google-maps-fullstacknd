@@ -21,6 +21,8 @@
     <label for="menu">Filter</label>
     <div class="menu-content">
       <input type="text" id="search-filter" placeholder="Type your filter" data-bind="value: filter, valueUpdate: 'afterkeydown'">
+      <input id="hide-listings" type="button" value="Hide Listings" data-bind="click: $root.hideMarkers" />
+      <input id="show-listings" type="button" value="Show Listings" data-bind="click: $root.showListings" />
       <ul data-bind="foreach: locations">
         <li><a href="#"><span data-bind="text: $data.title, click: $root.chooseALocation"></span></a></li>
       </ul>
