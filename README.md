@@ -8,7 +8,7 @@
 [![Awesome](https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg)](https://github.com/sindresorhus/awesome)
 
 
-This is a project for Udacity Course Nanodegree Full Stack Web Developer. It uses Google Maps API and Knockout JavaScript library.
+This is a project for Udacity Course Nanodegree Full Stack Web Developer. It uses Google Maps API and Knockout JavaScript library. Here I show my favourite places in Brasília - DF.
 
 ## Table of contents
 
@@ -17,7 +17,6 @@ This is a project for Udacity Course Nanodegree Full Stack Web Developer. It use
 -   [Contributing](#contributing)
 -   [Author](#author)
 -   [License](#license)
-
 
 ## Quick start
 
@@ -33,13 +32,13 @@ This is a project for Udacity Course Nanodegree Full Stack Web Developer. It use
 
 ## Contributing
 
-We welcome contributions to this project!
+I welcome contributions to this project!
 
 -   ⇄ Pull requests and ★ Stars are always welcome.
 
 ## Author
 
-* **Alberto Ivo Vieira** - [Github](https://github.com/albertoivo)
+* **Alberto Ivo Vieira** - [Github](https://github.com/albertoivo) | [LinkedIn](https://www.linkedin.com/in/alberto-ivo-vieira/)
 
 ## License
 
