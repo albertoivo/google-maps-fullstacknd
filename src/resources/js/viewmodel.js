@@ -5,8 +5,6 @@ function AppViewModel() {
 
   self.locations = ko.observableArray(locations)
 
-  self.filter = ko.observable()
-
   self.map = new google.maps.Map(document.getElementById('map'), {
     center: { lat: -15.8012908, lng: -47.8675807 },
     zoom: 13
@@ -46,7 +44,7 @@ function AppViewModel() {
         infowindow.marker = null
       })
       var streetViewService = new google.maps.StreetViewService()
-      var radius = 50
+      var radius = 500
 
       function getStreetView(data, status) {
         if (status == google.maps.StreetViewStatus.OK) {
@@ -58,7 +56,7 @@ function AppViewModel() {
           infowindow.setContent(
             '<div>' +
               marker.title +
-              '</div><div id="pano"></div><br /><!--div id="foursquare"></div-->'
+              '</div><div id="pano"></div><br />'
           )
           var panoramaOptions = {
             position: nearStreetViewLocation,
@@ -69,10 +67,6 @@ function AppViewModel() {
           }
           var panorama = new google.maps.StreetViewPanorama(
             document.getElementById('pano'),
-            panoramaOptions
-          )
-          var foursquare = new google.maps.StreetViewPanorama(
-            document.getElementById('foursquare'),
             panoramaOptions
           )
         } else {
@@ -118,33 +112,40 @@ function AppViewModel() {
     }
   }
 
-  self.showOnlyFilteredMarkers = function(markers) {
-    console.log('showOnlyFilteredMarkers')
-    self.hideMarkers()
-    for (var i = 0; i < markers.length; i++) {
-      markers[i].setMap(self.map)
-      bounds.extend(markers[i].position)
+  self.showOnlyFilteredMarkers = function(filteredMarkers) {
+    for (var i = 0; i < filteredMarkers.length; i++) {
+      filteredMarkers[i].setMap(self.map)
     }
-    self.map.fitBounds(bounds)
   }
 
-  self.filter() = ko.observable()
+  self.filter = ko.observable()
+
   self.filteredLocations = ko.computed( function() {
     var filter = self.filter()
     if (!filter) {
         self.showMarkers()
-        return self.locations();
+        return self.locations(locations)
     } else {
-        self.hideMarkers(self.markers())
-        return ko.utils.arrayFilter(self.markers(), function(marker) {
-             startsWith = marker.title.toLowerCase().indexOf(filter.toLowerCase()) !== -1
-             if (startsWith) {
-                self.showMarker(marker)
-                return true
-             }
-        })
+      self.hideMarkers()
+      var filteredMarkers = []
+      var filteredlocations = []
+
+      for (let i = 0; i < markers.length; i++) {
+        if (markers[i].title.toUpperCase().includes(filter.toUpperCase())) {
+          filteredMarkers.push(markers[i])
+        }
+      }
+
+      for (let i = 0; i < locations.length; i++) {
+        if (locations[i].title.toUpperCase().includes(filter.toUpperCase())) {
+          filteredlocations.push(locations[i])
+        }
+      }
+
+      self.showOnlyFilteredMarkers(filteredMarkers)
+      self.locations(filteredlocations)
     }
-}, self)
+  })
 
 }
 

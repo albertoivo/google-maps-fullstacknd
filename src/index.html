@@ -20,7 +20,7 @@
     <input type="checkbox" id="menu">
     <label for="menu">Filter</label>
     <div class="menu-content">
-      <input type="text" id="search-filter" placeholder="Type your filter" data-bind="valueUpdate: 'afterkeydown'">
+      <input type="text" placeholder="Type your filter" data-bind="value: filter, valueUpdate: 'afterkeydown'">
       <button data-bind="click: $root.hideMarkers">Hide All Markers</button>
       <button data-bind="click: $root.showMarkers">Show All Markers</button>
       <ul data-bind="foreach: locations">
