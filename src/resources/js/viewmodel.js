@@ -11,6 +11,8 @@ function AppViewModel() {
   })
 
   var largeInfowindow = new google.maps.InfoWindow()
+  var defaultIcon = makeMarkerIcon('0091ff');
+  var highlightedIcon = makeMarkerIcon('FFFF24');
   var bounds = new google.maps.LatLngBounds()
 
   for (var i = 0; i < self.locations().length; i++) {
@@ -22,14 +24,25 @@ function AppViewModel() {
       position: position,
       title: title,
       animation: google.maps.Animation.DROP,
-      id: i
+      id: i,
+      icon: defaultIcon
     })
 
     markers.push(marker)
 
     marker.addListener('click', function() {
       populateInfoWindow(this, largeInfowindow)
+      self.toggleBounce(this)
     })
+
+    marker.addListener('mouseover', function() {
+      this.setIcon(highlightedIcon);
+    });
+
+    marker.addListener('mouseout', function() {
+      this.setIcon(defaultIcon);
+    });
+
     bounds.extend(markers[i].position)
   }
 
@@ -87,13 +100,21 @@ function AppViewModel() {
     }
   }
 
-  self.chooseALocation = function(selectedLocation) {
-    for (var i = 0; i < markers.length; i++) {
-      if (selectedLocation.title == markers[i].title) {
-        selectedLocation = markers[i]
+  self.toggleBounce = function(selectedMarker) {
+    self.stopToggleBounce(markers)
+    if (selectedMarker.getAnimation() !== null) {
+      selectedMarker.setAnimation(null)
+    } else {
+      selectedMarker.setAnimation(google.maps.Animation.BOUNCE)
+    }
+  }
+
+  self.stopToggleBounce = function (markers) {
+    for( var i = 0; i < markers.length; i++){
+      if (markers[i].getAnimation() !== null) {
+        markers[i].setAnimation(null);
       }
     }
-    populateInfoWindow(selectedLocation, largeInfowindow)
   }
 
   self.showMarkers = function() {
@@ -144,6 +165,17 @@ function AppViewModel() {
       self.locations(filteredlocations)
     }
   })
+
+  function makeMarkerIcon(markerColor) {
+    var markerImage = new google.maps.MarkerImage(
+      'http://chart.googleapis.com/chart?chst=d_map_spin&chld=1.15|0|'+ markerColor +
+      '|40|_|%E2%80%A2',
+      new google.maps.Size(21, 34),
+      new google.maps.Point(0, 0),
+      new google.maps.Point(10, 34),
+      new google.maps.Size(21,34));
+    return markerImage;
+  }
   /*
   $.getJSON('https://api.foursquare.com/v2/venues/search', function(data) {
     // Now use this data to update your view models,
