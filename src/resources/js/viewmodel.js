@@ -54,9 +54,7 @@ function AppViewModel() {
             marker.position
           )
           infowindow.setContent(
-            '<div>' +
-              marker.title +
-              '</div><div id="pano"></div><br />'
+            '<div>' + marker.title + '</div><div id="pano"></div><br />'
           )
           var panoramaOptions = {
             position: nearStreetViewLocation,
@@ -120,11 +118,11 @@ function AppViewModel() {
 
   self.filter = ko.observable()
 
-  self.filteredLocations = ko.computed( function() {
+  self.filteredLocations = ko.computed(function() {
     var filter = self.filter()
     if (!filter) {
-        self.showMarkers()
-        return self.locations(locations)
+      self.showMarkers()
+      return self.locations(locations)
     } else {
       self.hideMarkers()
       var filteredMarkers = []
@@ -146,7 +144,49 @@ function AppViewModel() {
       self.locations(filteredlocations)
     }
   })
+  /*
+  $.getJSON('https://api.foursquare.com/v2/venues/search', function(data) {
+    // Now use this data to update your view models,
+    // and Knockout will update your UI automatically
+  })
 
+  $.ajax({
+    //API url with query including name, lat+lng, etc
+    url: 'https://api.foursquare.com/v2/venues/search',
+    type: 'GET',
+    async: true,
+    datatype: 'json',
+    data:
+      'client_id=' +
+      client_id +
+      '&client_secret=' +
+      client_secret +
+      '&ll=' +
+      address.marker.position.lat() +
+      ',' +
+      address.marker.position.lng() +
+      '&intent=match&limit=1&name=' +
+      address.address() +
+      '&v=20180201',
+    //populate infowindow with API response
+    success: function(data) {
+      self.infowindow.setContent(
+        "<img src='static/img/foursquare.png' style='height:70px;'>" +
+          '<br>Name: ' +
+          data.response.venues[0].name +
+          '<br>Address: ' +
+          data.response.venues[0].location.address +
+          '<br>Phone: ' +
+          data.response.venues[0].contact.formattedPhone +
+          "<br><br><a href='" +
+          data.response.venues[0].menu.url +
+          "'>Menu</a>"
+      )
+    },
+    error: function() {
+      self.infowindow.setContent("Oops, FourSquare isn't responding")
+    }
+  })*/
 }
 
 function initMap() {
@@ -157,36 +197,43 @@ var locations = [
   {
     title: 'National Congress',
     location: { lat: -15.7997118, lng: -47.8641627 },
-    wikipedia: 'Congresso_Nacional_do_Brasil'
+    wikipedia: 'Congresso_Nacional_do_Brasil',
+    foursquare: '4c0b9644340720a1a94c889'
   },
   {
     title: 'Mané Garrincha Stadium',
     location: { lat: -15.7835194, lng: -47.8992105 },
-    wikipedia: 'Estádio_Nacional_de_Brasília_Mané_Garrincha'
+    wikipedia: 'Estádio_Nacional_de_Brasília_Mané_Garrincha',
+    foursquare: '4e68bac3152001e1f73bbc72'
   },
   {
     title: 'Toinha Brasil Show',
     location: { lat: -15.8228551, lng: -47.9568887 },
-    wikipedia: ''
+    wikipedia: '',
+    foursquare: '5ace9a8fa879213b87f20d36'
   },
   {
     title: 'Cathedral of Brasília',
     location: { lat: -15.7983419, lng: -47.8755394 },
-    wikipedia: 'Catedral_Metropolitana_de_Brasília'
+    wikipedia: 'Catedral_Metropolitana_de_Brasília',
+    foursquare: '4bd9e2a32a3a0f471fb7a8b6'
   },
   {
     title: 'Café Cristina',
     location: { lat: -15.7833516, lng: -47.8785346 },
-    wikipedia: ''
+    wikipedia: '',
+    foursquare: '4c0684e0cf8c76b0b6963a65'
   },
   {
     title: 'City Park',
     location: { lat: -15.8003432, lng: -47.9078002 },
-    wikipedia: 'Parque_da_Cidade_Dona_Sarah_Kubitschek'
+    wikipedia: 'Parque_da_Cidade_Dona_Sarah_Kubitschek',
+    foursquare: '4b816f4bf964a520cfa530e3'
   },
   {
     title: 'National Theater',
     location: { lat: -15.7922213, lng: -47.8802482 },
-    wikipedia: 'Teatro_Nacional_Cláudio_Santoro'
+    wikipedia: 'Teatro_Nacional_Cláudio_Santoro',
+    foursquare: '4bc24e154cdfc9b65cf39521'
   }
 ]
