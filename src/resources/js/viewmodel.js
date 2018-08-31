@@ -43,12 +43,22 @@ function AppViewModel() {
         CLIENT_ID +
         '&client_secret=' +
         CLIENT_SECRET +
-        '&v=20180201',
+        '&v=20180801',
       success: function(data) {
-        console.log('sucesso: ', data)
-        foursquare_html = '<br>Name: ' + '<br>Address: ' + '<br>Phone: '
+        console.log('sucesso: ', data.responseJSON)
+        const fs = data.responseJSON.meta
+        foursquare_html =
+          '<img src="resources/img/foursquare.png"> Rating: ' +
+          fs +
+          ' | Likes: ' +
+          fs
       },
-      error: function(err) {console.log('erro: ', err)}
+      error: function(err) {
+        foursquare_html =
+          '<img src="resources/img/foursquare.png">' +
+          err.responseJSON.meta.errorDetail +
+          '. Try tomorrow! after 18:00 UTC'
+      }
     })
 
     markers.push(marker)
@@ -78,6 +88,7 @@ function AppViewModel() {
 
       infowindow.addListener('closeclick', function() {
         infowindow.marker = null
+        self.stopToggleBounce(markers)
       })
       var streetViewService = new google.maps.StreetViewService()
       var radius = 500
@@ -131,11 +142,11 @@ function AppViewModel() {
   self.chooseALocation = function(selectedLocation) {
     for (var i = 0; i < markers.length; i++) {
       if (selectedLocation.title == markers[i].title) {
-        selectedLocation = markers[i];
+        selectedLocation = markers[i]
         selectedLocation = markers[i]
       }
     }
-    populateInfoWindow(selectedLocation, largeInfowindow);
+    populateInfoWindow(selectedLocation, largeInfowindow)
   }
 
   self.toggleBounce = function(selectedMarker) {
@@ -226,43 +237,36 @@ var locations = [
   {
     title: 'National Congress',
     location: { lat: -15.7997118, lng: -47.8641627 },
-    wikipedia: 'Congresso_Nacional_do_Brasil',
     foursquare: '4c0b9644340720a1a94c8893'
   },
   {
     title: 'Mané Garrincha Stadium',
     location: { lat: -15.7835194, lng: -47.8992105 },
-    wikipedia: 'Estádio_Nacional_de_Brasília_Mané_Garrincha',
     foursquare: '4e68bac3152001e1f73bbc72'
   },
   {
     title: 'Toinha Brasil Show',
     location: { lat: -15.8228551, lng: -47.9568887 },
-    wikipedia: '',
     foursquare: '5ace9a8fa879213b87f20d36'
   },
   {
     title: 'Cathedral of Brasília',
     location: { lat: -15.7983419, lng: -47.8755394 },
-    wikipedia: 'Catedral_Metropolitana_de_Brasília',
     foursquare: '4bd9e2a32a3a0f471fb7a8b6'
   },
   {
     title: 'Café Cristina',
     location: { lat: -15.7833516, lng: -47.8785346 },
-    wikipedia: '',
     foursquare: '4c0684e0cf8c76b0b6963a65'
   },
   {
     title: 'City Park',
     location: { lat: -15.8003432, lng: -47.9078002 },
-    wikipedia: 'Parque_da_Cidade_Dona_Sarah_Kubitschek',
     foursquare: '4b816f4bf964a520cfa530e3'
   },
   {
     title: 'National Theater',
     location: { lat: -15.7922213, lng: -47.8802482 },
-    wikipedia: 'Teatro_Nacional_Cláudio_Santoro',
     foursquare: '4bc24e154cdfc9b65cf39521'
   }
 ]
