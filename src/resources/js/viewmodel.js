@@ -45,9 +45,10 @@ function AppViewModel() {
         CLIENT_SECRET +
         '&v=20180201',
       success: function(data) {
+        console.log('sucesso: ', data)
         foursquare_html = '<br>Name: ' + '<br>Address: ' + '<br>Phone: '
       },
-      error: function() {}
+      error: function(err) {console.log('erro: ', err)}
     })
 
     markers.push(marker)
@@ -125,6 +126,16 @@ function AppViewModel() {
 
       infowindow.open(self.map, marker)
     }
+  }
+
+  self.chooseALocation = function(selectedLocation) {
+    for (var i = 0; i < markers.length; i++) {
+      if (selectedLocation.title == markers[i].title) {
+        selectedLocation = markers[i];
+        selectedLocation = markers[i]
+      }
+    }
+    populateInfoWindow(selectedLocation, largeInfowindow);
   }
 
   self.toggleBounce = function(selectedMarker) {
