@@ -11,13 +11,18 @@ function AppViewModel() {
   })
 
   var largeInfowindow = new google.maps.InfoWindow()
-  var defaultIcon = makeMarkerIcon('0091ff');
-  var highlightedIcon = makeMarkerIcon('FFFF24');
+  var defaultIcon = makeMarkerIcon('0091ff')
+  var highlightedIcon = makeMarkerIcon('FFFF24')
   var bounds = new google.maps.LatLngBounds()
+
+  const CLIENT_ID = '1YBQ5MRZ2OAFCBWN4D5VA0BO4JFIK5HHWOO0U1O5XKR2RBNB'
+  const CLIENT_SECRET = 'EMETHNPTZRNMB4HRJF4YNK3SSRE431RXOQKZT3HDLJ1AODOZ'
 
   for (var i = 0; i < self.locations().length; i++) {
     var position = self.locations()[i].location
     var title = self.locations()[i].title
+    var foursquare_id = self.locations()[i].foursquare
+    var foursquare_html = ''
 
     var marker = new google.maps.Marker({
       map: self.map,
@@ -28,6 +33,23 @@ function AppViewModel() {
       icon: defaultIcon
     })
 
+    $.ajax({
+      url: 'https://api.foursquare.com/v2/venues/' + foursquare_id,
+      type: 'GET',
+      async: true,
+      datatype: 'json',
+      data:
+        'client_id=' +
+        CLIENT_ID +
+        '&client_secret=' +
+        CLIENT_SECRET +
+        '&v=20180201',
+      success: function(data) {
+        foursquare_html = '<br>Name: ' + '<br>Address: ' + '<br>Phone: '
+      },
+      error: function() {}
+    })
+
     markers.push(marker)
 
     marker.addListener('click', function() {
@@ -36,12 +58,12 @@ function AppViewModel() {
     })
 
     marker.addListener('mouseover', function() {
-      this.setIcon(highlightedIcon);
-    });
+      this.setIcon(highlightedIcon)
+    })
 
     marker.addListener('mouseout', function() {
-      this.setIcon(defaultIcon);
-    });
+      this.setIcon(defaultIcon)
+    })
 
     bounds.extend(markers[i].position)
   }
@@ -59,6 +81,12 @@ function AppViewModel() {
       var streetViewService = new google.maps.StreetViewService()
       var radius = 500
 
+      var infoWindowContent =
+        '<div>' +
+        marker.title +
+        '</div><div id="pano"></div><br />' +
+        foursquare_html
+
       function getStreetView(data, status) {
         if (status == google.maps.StreetViewStatus.OK) {
           var nearStreetViewLocation = data.location.latLng
@@ -66,9 +94,8 @@ function AppViewModel() {
             nearStreetViewLocation,
             marker.position
           )
-          infowindow.setContent(
-            '<div>' + marker.title + '</div><div id="pano"></div><br />'
-          )
+          infowindow.setContent(infoWindowContent)
+
           var panoramaOptions = {
             position: nearStreetViewLocation,
             pov: {
@@ -109,10 +136,10 @@ function AppViewModel() {
     }
   }
 
-  self.stopToggleBounce = function (markers) {
-    for( var i = 0; i < markers.length; i++){
+  self.stopToggleBounce = function(markers) {
+    for (var i = 0; i < markers.length; i++) {
       if (markers[i].getAnimation() !== null) {
-        markers[i].setAnimation(null);
+        markers[i].setAnimation(null)
       }
     }
   }
@@ -168,57 +195,16 @@ function AppViewModel() {
 
   function makeMarkerIcon(markerColor) {
     var markerImage = new google.maps.MarkerImage(
-      'http://chart.googleapis.com/chart?chst=d_map_spin&chld=1.15|0|'+ markerColor +
-      '|40|_|%E2%80%A2',
+      'http://chart.googleapis.com/chart?chst=d_map_spin&chld=1.15|0|' +
+        markerColor +
+        '|40|_|%E2%80%A2',
       new google.maps.Size(21, 34),
       new google.maps.Point(0, 0),
       new google.maps.Point(10, 34),
-      new google.maps.Size(21,34));
-    return markerImage;
+      new google.maps.Size(21, 34)
+    )
+    return markerImage
   }
-  /*
-  $.getJSON('https://api.foursquare.com/v2/venues/search', function(data) {
-    // Now use this data to update your view models,
-    // and Knockout will update your UI automatically
-  })
-
-  $.ajax({
-    //API url with query including name, lat+lng, etc
-    url: 'https://api.foursquare.com/v2/venues/search',
-    type: 'GET',
-    async: true,
-    datatype: 'json',
-    data:
-      'client_id=' +
-      client_id +
-      '&client_secret=' +
-      client_secret +
-      '&ll=' +
-      address.marker.position.lat() +
-      ',' +
-      address.marker.position.lng() +
-      '&intent=match&limit=1&name=' +
-      address.address() +
-      '&v=20180201',
-    //populate infowindow with API response
-    success: function(data) {
-      self.infowindow.setContent(
-        "<img src='static/img/foursquare.png' style='height:70px;'>" +
-          '<br>Name: ' +
-          data.response.venues[0].name +
-          '<br>Address: ' +
-          data.response.venues[0].location.address +
-          '<br>Phone: ' +
-          data.response.venues[0].contact.formattedPhone +
-          "<br><br><a href='" +
-          data.response.venues[0].menu.url +
-          "'>Menu</a>"
-      )
-    },
-    error: function() {
-      self.infowindow.setContent("Oops, FourSquare isn't responding")
-    }
-  })*/
 }
 
 function initMap() {
@@ -230,7 +216,7 @@ var locations = [
     title: 'National Congress',
     location: { lat: -15.7997118, lng: -47.8641627 },
     wikipedia: 'Congresso_Nacional_do_Brasil',
-    foursquare: '4c0b9644340720a1a94c889'
+    foursquare: '4c0b9644340720a1a94c8893'
   },
   {
     title: 'Mané Garrincha Stadium',
