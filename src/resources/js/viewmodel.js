@@ -33,38 +33,10 @@ function AppViewModel() {
       icon: defaultIcon
     })
 
-    $.ajax({
-      url: 'https://api.foursquare.com/v2/venues/' + foursquare_id,
-      type: 'GET',
-      async: true,
-      datatype: 'json',
-      data:
-        'client_id=' +
-        CLIENT_ID +
-        '&client_secret=' +
-        CLIENT_SECRET +
-        '&v=20180801',
-      success: function(data) {
-        console.log('sucesso: ', data.responseJSON)
-        const fs = data.responseJSON.meta
-        foursquare_html =
-          '<img src="resources/img/foursquare.png"> Rating: ' +
-          fs +
-          ' | Likes: ' +
-          fs
-      },
-      error: function(err) {
-        foursquare_html =
-          '<img src="resources/img/foursquare.png">' +
-          err.responseJSON.meta.errorDetail +
-          '. Try tomorrow! after 18:00 UTC'
-      }
-    })
-
     markers.push(marker)
 
     marker.addListener('click', function() {
-      populateInfoWindow(this, largeInfowindow)
+      populateInfoWindow(this, largeInfowindow, foursquare_id)
       self.toggleBounce(this)
     })
 
@@ -81,7 +53,7 @@ function AppViewModel() {
 
   self.map.fitBounds(bounds)
 
-  function populateInfoWindow(marker, infowindow) {
+  function populateInfoWindow(marker, infowindow, foursquare_id) {
     if (infowindow.marker != marker) {
       infowindow.setContent('')
       infowindow.marker = marker
@@ -92,6 +64,8 @@ function AppViewModel() {
       })
       var streetViewService = new google.maps.StreetViewService()
       var radius = 500
+
+      self.foursquare(foursquare_id)
 
       var infoWindowContent =
         '<div>' +
@@ -140,13 +114,16 @@ function AppViewModel() {
   }
 
   self.chooseALocation = function(selectedLocation) {
+    let foursquare_id = selectedLocation.foursquare
+    self.stopToggleBounce(markers)
     for (var i = 0; i < markers.length; i++) {
       if (selectedLocation.title == markers[i].title) {
         selectedLocation = markers[i]
-        selectedLocation = markers[i]
+        selectedLocation.setMap(self.map)
       }
     }
-    populateInfoWindow(selectedLocation, largeInfowindow)
+    self.toggleBounce(selectedLocation)
+    populateInfoWindow(selectedLocation, largeInfowindow, foursquare_id)
   }
 
   self.toggleBounce = function(selectedMarker) {
@@ -227,10 +204,43 @@ function AppViewModel() {
     )
     return markerImage
   }
+
+  self.foursquare = function(foursquare_id) {
+    $.ajax({
+      url: 'https://api.foursquare.com/v2/venues/' + foursquare_id,
+      type: 'GET',
+      async: true,
+      datatype: 'json',
+      data:
+        'client_id=' +
+        CLIENT_ID +
+        '&client_secret=' +
+        CLIENT_SECRET +
+        '&v=20180801',
+      success: function(data) {
+        const fs = data.response.venue
+        foursquare_html =
+          '<img src="resources/img/foursquare.png"> Rating: ' +
+          fs.rating +
+          ' | ' +
+          fs.likes.summary
+      },
+      error: function(err) {
+        foursquare_html =
+          '<img src="resources/img/foursquare.png">' +
+          err.responseJSON.meta.errorDetail +
+          '. Try tomorrow after 18:00 UTC'
+      }
+    })
+  }
 }
 
 function initMap() {
   ko.applyBindings(new AppViewModel())
+}
+
+function mapFail() {
+  alert('Sorry. Google Maps has failed. Please refresh this page.')
 }
 
 var locations = [

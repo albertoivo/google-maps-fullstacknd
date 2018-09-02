@@ -27,8 +27,9 @@ This is a project for Udacity Course Nanodegree Full Stack Web Developer. It use
 
 ## Developed with
 
+* [knockoutjs](https://knockoutjs.com/)
 * [Google Maps API](https://developers.google.com/maps/documentation/javascript/tutorial)
-* [knockoutjs](https://knockoutjs.com/documentation/introduction.html)
+* [Foursquare API](https://developer.foursquare.com/docs)
 
 ## Contributing
 
