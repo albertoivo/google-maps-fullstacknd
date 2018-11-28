@@ -237,6 +237,11 @@ function AppViewModel() {
 
 function initMap() {
   ko.applyBindings(new AppViewModel())
+
+  window.gm_authFailure = () => {
+    let mapview = document.getElementById('map');
+    mapview.innerHTML ='<p class="erro"><strong>Não foi possível carregar o Google Maps.<br> Por favor, recarregue a página.</strong></p>';
+  }
 }
 
 function mapFail() {
